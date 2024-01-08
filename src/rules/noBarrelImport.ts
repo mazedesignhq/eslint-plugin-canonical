@@ -31,7 +31,7 @@ const formatRelativeImport = (
     newImport = './' + newImport;
   }
 
-  return newImport.replace(/\.tsx?$/u, '');
+  return newImport.replace(/\.(j|t)sx?$/u, '');
 };
 
 type ModuleExports = {

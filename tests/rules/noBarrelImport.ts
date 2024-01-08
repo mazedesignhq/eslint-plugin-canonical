@@ -86,6 +86,7 @@ export default createRuleTester(
       invalidTest('barrelImportAliasedReexport'),
       invalidTest('barrelImportDeep'),
       invalidTest('barrelImportDefault'),
+      invalidTest('barrelImportDefaultAsNamed'),
       invalidTest('barrelTypeImport'),
       invalidTest('mixedImport'),
     ],

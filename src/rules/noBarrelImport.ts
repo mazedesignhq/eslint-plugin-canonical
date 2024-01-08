@@ -189,13 +189,18 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const newImport = `import { ${
-          node.importKind === 'type' ? 'type ' : ''
-        }${
-          importSource.local === localNode.name
-            ? importSource.local
-            : `${importSource.local} as ${localNode.name}`
-        } } from '${relativeImportPath}';`;
+        let newImport = '';
+        const typePrefix = node.importKind === 'type' ? 'type ' : '';
+
+        if (importSource.local === 'default') {
+          newImport = `import ${typePrefix}${localNode.name} from '${relativeImportPath}';`;
+        } else {
+          newImport = `import { ${typePrefix}${
+            importSource.local === localNode.name
+              ? importSource.local
+              : `${importSource.local} as ${localNode.name}`
+          } } from '${relativeImportPath}';`;
+        }
 
         if (importDeclarationNode.specifiers.length === 1) {
           context.report({

@@ -56,7 +56,17 @@ export default createRuleTester(
       },
       {
         code: `
-          export { default as Button5 } from 'app/CustomButton';
+          export { default as DefaultReExportButton } from 'app/CustomButton';
+        `,
+        errors: [
+          {
+            messageId: 'noReExport',
+          },
+        ],
+      },
+      {
+        code: `
+          export { NamedReExportButton } from 'app/CustomButton';
         `,
         errors: [
           {
@@ -107,7 +117,27 @@ export default createRuleTester(
       },
       {
         code: `
+          export { Button9 } from 'app/CustomButton';
+        `,
+        errors: [
+          {
+            messageId: 'noReExport',
+          },
+        ],
+      },
+      {
+        code: `
           export * from 'app/CustomButton';
+        `,
+        errors: [
+          {
+            messageId: 'noReExport',
+          },
+        ],
+      },
+      {
+        code: `
+          export * as Button10 from 'app/CustomButton';
         `,
         errors: [
           {

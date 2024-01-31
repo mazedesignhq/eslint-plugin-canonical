@@ -12,10 +12,10 @@ type MessageIds = 'noReExport';
 type ReportInfo = {
   location: TSESTree.SourceLocation;
   type:
-    | 'DefaultReExport'
     | 'ExportDefault'
     | 'ExportObject'
     | 'ObjectProperty'
+    | 'ReExport'
     | 'Variable';
 };
 
@@ -87,11 +87,12 @@ export default createRule<Options, MessageIds>({
           }
         } else if (node.specifiers) {
           for (const specifier of node.specifiers) {
-            if (node.source && specifier.local.name === 'default') {
+            if (node.source) {
               // export { default as Button } from 'app/CustomButtom';
+              // export { Button } from 'app/CustomButtom';
               appendToExports(specifier.exported.name, {
                 location: specifier.exported.loc,
-                type: 'DefaultReExport',
+                type: 'ReExport',
               });
             } else {
               // export { Button }
@@ -117,7 +118,7 @@ export default createRule<Options, MessageIds>({
         for (const exportName of Object.keys(exports)) {
           const reportInfoList = exports[exportName];
           for (const { location, type } of reportInfoList) {
-            if (imports.has(exportName) || type === 'DefaultReExport') {
+            if (imports.has(exportName) || type === 'ReExport') {
               context.report({
                 data: {
                   name: exportName,
